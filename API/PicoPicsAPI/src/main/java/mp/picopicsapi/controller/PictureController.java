@@ -23,12 +23,14 @@ public class PictureController {
         this.pictureService = pictureService;
     }
 
-    @Operation(summary = "Upload de imagem", description = "Envie uma imagem como MultipartFile")
+    @Operation(summary = "Upload de imagem", description = "Envie os bytes da imagem")
     @PostMapping
     public ResponseEntity<Picture> uploadPicture(
-            @RequestParam("file") MultipartFile file,
-            @AuthenticationPrincipal User owner) throws IOException {
-        return ResponseEntity.ok(pictureService.uploadPicture(file, owner));
+            @RequestBody byte[] fileBytes,
+            @RequestParam String filename,
+            @RequestParam(required = false) String contentType,
+            @AuthenticationPrincipal User owner) {
+        return ResponseEntity.ok(pictureService.uploadPicture(fileBytes, filename, contentType, owner));
     }
 
     @GetMapping("/{id}")
@@ -45,15 +47,19 @@ public class PictureController {
 
     @GetMapping
     public ResponseEntity<List<Picture>> getUserPictures(@AuthenticationPrincipal User owner) {
-        return ResponseEntity.ok(pictureService.getUserPictures(owner));
+        List<Picture> pictures = pictureService.getUserPictures(owner);
+        pictures.sort((p1, p2) -> p2.getUploadDate().compareTo(p1.getUploadDate()));
+        return ResponseEntity.ok(pictures);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Picture> updatePicture(
             @PathVariable long id,
-            @RequestParam("file") MultipartFile file,
-            @AuthenticationPrincipal User owner) throws IOException {
-        return ResponseEntity.ok(pictureService.updatePicture(id, file, owner));
+            @RequestBody byte[] fileBytes,
+            @RequestParam String filename,
+            @RequestParam(required = false) String contentType,
+            @AuthenticationPrincipal User owner) {
+        return ResponseEntity.ok(pictureService.updatePicture(id, fileBytes, filename, contentType, owner));
     }
 
     @DeleteMapping("/{id}")

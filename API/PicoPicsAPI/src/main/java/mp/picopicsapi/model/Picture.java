@@ -2,6 +2,8 @@ package mp.picopicsapi.model;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 public class Picture {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
@@ -13,6 +15,12 @@ public class Picture {
     private byte[] data;
     @ManyToOne
     private User owner;
+    @Column(nullable = false)
+    private LocalDateTime uploadDate;
+
+    public void setUploadDate(LocalDateTime uploadDate) { this.uploadDate = uploadDate; }
+
+    public LocalDateTime getUploadDate() { return uploadDate; }
 
     public long getId() {
         return id;

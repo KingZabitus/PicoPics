@@ -17,11 +17,14 @@ public class PictureService {
         this.pictureRepository = pictureRepository;
     }
 
-    public Picture uploadPicture(MultipartFile file, User owner) throws IOException {
+    public Picture uploadPicture(byte[] fileBytes, String filename, String contentType, User owner) {
         Picture picture = new Picture();
-        picture.setFilename(file.getOriginalFilename());
-        picture.setData(file.getBytes());
+
+        picture.setFilename(filename);
+        picture.setContentType(contentType != null ? contentType : "application/octet-stream");
+        picture.setData(fileBytes);
         picture.setOwner(owner);
+
         return pictureRepository.save(picture);
     }
 
@@ -33,12 +36,13 @@ public class PictureService {
         return pictureRepository.findByOwner(owner);
     }
 
-    public Picture updatePicture(long id, MultipartFile file, User owner) throws IOException {
-        Picture picture = pictureRepository.findByIdAndOwner(id, owner).orElseThrow(() -> new RuntimeException("Picture not found"));
+    public Picture updatePicture(long id, byte[] fileBytes, String filename, String contentType, User owner) {
+        Picture picture = pictureRepository.findByIdAndOwner(id, owner)
+                .orElseThrow(() -> new RuntimeException("Picture not found"));
 
-        picture.setFilename(file.getOriginalFilename());
-        picture.setContentType(file.getContentType());
-        picture.setData(file.getBytes());
+        picture.setFilename(filename);
+        picture.setContentType(contentType != null ? contentType : picture.getContentType());
+        picture.setData(fileBytes);
 
         return pictureRepository.save(picture);
     }
