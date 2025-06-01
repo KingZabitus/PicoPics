@@ -1,5 +1,6 @@
 package mp.picopicsapi.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import mp.picopicsapi.model.Picture;
 import mp.picopicsapi.model.User;
 import mp.picopicsapi.service.PictureService;
@@ -22,6 +23,7 @@ public class PictureController {
         this.pictureService = pictureService;
     }
 
+    @Operation(summary = "Upload de imagem", description = "Envie uma imagem como MultipartFile")
     @PostMapping
     public ResponseEntity<Picture> uploadPicture(
             @RequestParam("file") MultipartFile file,
