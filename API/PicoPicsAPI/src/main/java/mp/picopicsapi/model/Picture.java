@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 public class Picture {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-
     private String filename;
     private String contentType;
     @Lob

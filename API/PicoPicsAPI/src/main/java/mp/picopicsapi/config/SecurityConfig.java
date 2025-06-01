@@ -1,4 +1,4 @@
-package mp.picopicsapi.security;
+package mp.picopicsapi.config;
 
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -35,6 +35,9 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         auth -> auth.requestMatchers("/authenticate").permitAll()
+                                .requestMatchers("/api/users").hasRole("ADMIN")
+                                .requestMatchers("/api/users/**").authenticated()
+                                .requestMatchers("/api/pictures/**").authenticated()
                                 .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
                 .oauth2ResourceServer(
