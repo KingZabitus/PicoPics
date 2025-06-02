@@ -2,6 +2,8 @@
 application.properties
 .key
 .app
+package.json
+node_modules/
 
 # Compiled class file
 *.class
