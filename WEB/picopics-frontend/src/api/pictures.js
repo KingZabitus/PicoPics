@@ -10,21 +10,22 @@ export const getPictures = async () => {
     }
 };
 
-export const uploadPicture = async (file, fileName, contentType) => {
-    try {
-        const formData = new FormData();
-        formData.append('file', file);
-        const response = await api.post('/api/picture', formData, {
-            params: { filename, contentType },
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        });
-        return response.data;
-    } catch (error){
-        console.error('Error uploading picture: ', error);
-        throw error;
-    }
+export const uploadPicture = async (fileBytes, filename, contentType) => {
+  try {
+    const response = await api.post('/api/pictures', fileBytes, {
+      params: { 
+        filename, 
+        contentType: contentType || 'application/octet-stream' 
+      },
+      headers: {
+        'Content-Type': 'application/octet-stream',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error uploading picture:', error);
+    throw error;
+  }
 };
 
 export const getPictureById = async (id) => {
