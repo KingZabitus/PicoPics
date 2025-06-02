@@ -3,6 +3,7 @@ application.properties
 .key
 .app
 package.json
+package-lock.json
 node_modules/
 
 # Compiled class file
@@ -63,3 +64,5 @@ build/
 
 ### VS Code ###
 .vscode/
+WEB/picopics-frontend/package-lock.json
+WEB/picopics-frontend/package-lock.json
