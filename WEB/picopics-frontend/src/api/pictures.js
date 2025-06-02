@@ -29,15 +29,15 @@ export const uploadPicture = async (fileBytes, filename, contentType) => {
 };
 
 export const getPictureById = async (id) => {
-    try {
-        const response = await api.get(`/api/pictures/${id}`, {
-            responseType: 'blob',
-        });
-        return response.data;
-    } catch(error) {
-        console.error('Error fetching picture: ', error);
-        throw error;
-    }
+  try {
+    const response = await api.get(`/api/pictures/${id}`, {
+      responseType: 'arraybuffer', 
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching picture:', error);
+    throw error;
+  }
 };
 
 export const deletePicture = async(id) => {
