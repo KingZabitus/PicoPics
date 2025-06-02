@@ -23,7 +23,6 @@ const PrivateRoute = ({ children }) => {
 
 const AdminRoute = ({ children }) => {
   const { user } = useAuth();
-  // Aqui você precisaria verificar se o usuário tem role ADMIN
   return user ? children : <Navigate to="/" />;
 };
 
