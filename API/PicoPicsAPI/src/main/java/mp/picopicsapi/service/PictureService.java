@@ -28,8 +28,8 @@ public class PictureService {
         return pictureRepository.save(picture);
     }
 
-    public Optional<Picture> getPicture(long id, User owner){
-        return pictureRepository.findByIdAndOwner(id, owner);
+    public Optional<Picture> getPicture(long id){
+        return pictureRepository.findById(id);
     }
 
     public List<Picture> getUserPictures(User owner) {

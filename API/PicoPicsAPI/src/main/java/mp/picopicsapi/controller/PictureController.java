@@ -3,6 +3,7 @@ package mp.picopicsapi.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import mp.picopicsapi.model.Picture;
 import mp.picopicsapi.model.User;
+import mp.picopicsapi.repository.UserAuthenticated;
 import mp.picopicsapi.service.PictureService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -36,8 +37,8 @@ public class PictureController {
     @GetMapping("/{id}")
     public ResponseEntity<byte[]> getPicture(
             @PathVariable long id,
-            @AuthenticationPrincipal User owner) {
-        return pictureService.getPicture(id, owner)
+            @AuthenticationPrincipal UserAuthenticated principal) {
+        return pictureService.getPicture(id)
                 .map(picture -> ResponseEntity.ok()
                         .contentType(MediaType.parseMediaType(picture.getContentType()))
                         .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + picture.getFilename() + "\"")
