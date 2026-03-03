@@ -18,5 +18,4 @@ public class AuthController {
     public String authenticate(@RequestParam String username, @RequestParam String password) {
         return authService.authenticate(username, password);
     }
-
 }

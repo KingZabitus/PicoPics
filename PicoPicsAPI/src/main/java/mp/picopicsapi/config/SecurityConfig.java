@@ -34,16 +34,26 @@ public class SecurityConfig {
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(
-                        auth -> auth.requestMatchers("/authenticate").permitAll()
-                                .requestMatchers("/api/users").hasRole("ADMIN")
-                                .requestMatchers("/api/users/**").authenticated()
-                                .requestMatchers("/api/pictures/**").authenticated()
-                                .anyRequest().authenticated())
-                .httpBasic(Customizer.withDefaults())
-                .oauth2ResourceServer(
-                        conf -> conf.jwt(Customizer.withDefaults()));
+        http
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/login", "/register", "/css/**").permitAll()
+                        .requestMatchers("/api/users").hasRole("ADMIN")
+                        .requestMatchers("/api/**").authenticated()
+                        .anyRequest().authenticated()
+                )
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/dashboard", true)
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutSuccessUrl("/login?logout")
+                )
+                .oauth2ResourceServer(oauth2 ->
+                        oauth2.jwt(Customizer.withDefaults())
+                );
+
         return http.build();
     }
 

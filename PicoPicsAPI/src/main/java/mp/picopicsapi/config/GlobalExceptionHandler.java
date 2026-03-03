@@ -2,6 +2,7 @@ package mp.picopicsapi.config;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
@@ -12,8 +13,9 @@ import java.io.IOException;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<String> handleRuntimeException(RuntimeException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    public String handleRuntimeException(RuntimeException ex, Model model) {
+        model.addAttribute("message", ex.getMessage());
+        return "error";
     }
 
     @ExceptionHandler(IOException.class)
